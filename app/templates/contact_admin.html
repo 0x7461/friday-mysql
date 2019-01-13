@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <div class="card mt-5 ml-auto mr-auto" style="max-width: 40%;">
+                <img class="card-img-top img-responsive" src="{{ url_for('static', filename='admin.png') }}" alt="Admin Image">
+                <div class="card-body">
+                    <h4 class="card-title">Administrator <b>Tuan Anh</b></h4>
+                    <p class="card-text">You can use the contact admin button below to send requests about user account and data as well as other feedback about the systems. Thank you!</p>
+                    <a class="btn btn-dark text-white href="mailto:tuananh@admin.friday.com">Contact Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

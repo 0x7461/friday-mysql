@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block linktag %}
+<!-- Bootstrap CSS -->
+{{ super() }}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='user.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row text-center">
+        <div class="col-lg-12">
+            <div class="card mt-5 ml-auto mr-auto" style="max-width: 100%;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <img class="card-img-top img-responsive" src="{{ user.avatar(300) }}" alt="User Image">
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="card-text text-left">
+                                <p><b>Name</b>: {{ user.fullname }}</p>
+                                <p><b>Email</b>: {{ user.email }}</p>
+                                <div>
+                                    <p><b>Teaching class</b>:</p>
+                                    <ol>
+                                        {% for c in user.teaching_courses %}
+                                        <li>{{c.name}}</li>
+                                        {% endfor %}
+                                    </ol>
+                                </div>
+                                {% if user.about_me %}
+                                <p><b>About</b>: {{ user.about_me }} <br></p>
+                                {% endif %}
+                                {% if user.last_seen %}
+                                <p><b>Last seen at</b>: {{ user.last_seen }} <br></p>
+                                {% endif %}
+                                <div>
+                                    {% if user == current_user %}
+                                    <a href="{{ url_for('edit_profile') }}" class="btn btn-dark">Edit your profile</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

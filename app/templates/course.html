@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block linktag %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='course.css') }}">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row text-center mt-3">
+        <div class="col-lg-12">
+            <div class="card text-white bg-dark mb-3" style="min-width: 100%;">
+              <div class="card-header"><h3>Details about course <b>{{ course.name }}</b></h3></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4">
+
+            <div class="card mb-3" style="max-width: 100%;">
+                <div class="text-white bg-dark card-header">Course Details</div>
+                <div class="card-body bg-light text-left">
+                    <ul>
+                        <li><b>Course ID</b>: {{ course.id }}</li>
+                        <li><b>Course Code</b>: {{ course.code }}</li>
+                        <li><b>Course Name</b>: {{ course.name }}</li>
+                        <li><b>Instructor</b>: {{ course.instructor.fullname }}</li>
+                        <li><b>Date</b>: from {{ course.start_date }} to {{ course.end_date }}</li>
+                        <li><b>Time</b>: from {{ course.start_time }} to {{ course.end_time }}</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card mb-3" style="max-width: 100%;">
+                <div class="text-white bg-dark card-header">Students List</div>
+                <div class="card-body bg-light">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Code</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for s in course.enrollees %}
+                        <tr>
+                            <th scope="row">{{ s.id }}</th>
+                            <td>{{ s.code }}</td>
+                            <td>{{ s.name }}</td>
+                            <td>
+                                <a href="#" type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#student-{{ s.id }}-details">Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mb-3" style="max-width: 100%;">
+                <div class="text-white bg-dark card-header">Logs List</div>
+                <div class="card-body bg-light">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Date</th>
+                              <th scope="col">Created At</th>
+                              <th scope="col">Present Rate</th>
+                              <th scope="col">Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for l in course.logs %}
+                        <tr>
+                            <th scope="row">{{ l.id }}</th>
+                            <td>{{ l.date }}</td>
+                            <td>{{ l.created_at }}</td>
+                            <td>{{ '{:.2f}'.format(l.present_rate) }}%</td>
+                            <td>
+                                <a href="#" type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#log-{{ l.id }}-details">Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Student Modal -->
+{% for s in course.enrollees %}
+<div class="modal fade" id="student-{{ s.id }}-details" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Details about student <strong>{{ s.name }}</strong></h4>
+        </div>
+        <div class="modal-body">
+            <ud>
+                <li><b>Student code</b>: {{ s.code }}</li>
+                <li><b>Student name</b>: {{ s.name }}</li>
+                <li><b>Student email</b>: {{ s.email }}</li>
+                <li><b>Enrolls in these courses</b>:
+                    <ol>
+                    {% for c in s.enroll %}
+                        <li>[{{ c.code }}] {{ c.name }}</li>
+                    {% endfor %}
+                    </ol>
+                </li>
+                <li><b>Attends these classes</b>:
+                    <ol>
+                    {% for l in s.attend %}
+                        <li>{{ l.date }}</li>
+                    {% endfor %}
+                    </ol>
+                </li>
+            </ud>
+        </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Log Modal -->
+{% for l in course.logs %}
+<div class="modal fade" id="log-{{ l.id }}-details" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Students in log <strong>{{ l.id }}</strong></h4>
+        </div>
+        <div class="modal-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Code</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for s in l.attendees %}
+                <tr>
+                    <th scope="row">{{ s.id }}</th>
+                    <td>{{ s.code }}</td>
+                    <td>{{ s.name }}</td>
+                    <td>
+                        <a href="#" type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#student-{{ s.id }}-details" data-dismiss="modal">Details</a>
+                    </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}
+

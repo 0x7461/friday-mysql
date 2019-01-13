@@ -1,0 +1,17 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+    {{ super() }}
+
+    <div class="card" style="max-width: 30%;">
+        <img class="card-img-top" src="{{ url_for('static', filename='admin.png') }}" alt="Admin Image" style="max-width: 100%">
+        <div class="card-body text-left">
+            <br>
+            <p><b>Admin Username</b> :: {{ current_user.username }}</p>
+            <p><b>Admin Email</b> :: {{ current_user.email }}</p>
+            <p><b>About the Admin</b> :: {{ current_user.about_me }}</p>
+            <a class="btn btn-primary" href="/">Back to Home page</a>
+        </div>
+    </div>
+
+{% endblock body %}

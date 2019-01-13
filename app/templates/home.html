@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block linktag %}
+    {{ super() }}
+    <link href="{{ url_for ('static', filename='home.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+    {% if msg %}    
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ msg }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <h3 class="my-4">Teaching Courses
+            <br>
+            <sub>This is a list of the courses that you are currently an instructor</sub>
+            <br>
+        </h3>
+        <div class="row">
+            {% for c in courses %}
+            <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                <a href=""><img class="card-img-top" src="{{ url_for('static', filename='course.png') }}" alt=""></a>
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="{{ url_for('course', code=c.code) }}">Course {{ c.code }}</a>
+                        </h4>
+                        <p class="card-text">{{ c.name }}</p>
+                        <p class="card-text">
+                            From {{ c.start_time }} to {{ c.end_time }}
+                        </p>
+                        <a href="{{ url_for('course', code=c.code) }}">
+                            <button type="button" class="btn btn-outline-secondary btn-sm">Details</button>
+                        </a>
+                        <a href="{{ url_for('export', course_code=c.code) }}">
+                            <button type="button" class="btn btn-outline-secondary btn-sm">Export</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- /.row -->
+    </div>
+{% endblock %}
+
+
+

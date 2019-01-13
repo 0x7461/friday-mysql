@@ -1,0 +1,29 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+
+    <p>Here I'm going to display some student data.</p>
+
+    <table>
+  <tr>
+    <th>ID</th>
+    <th>Code</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Images</th>
+    <th>Request Upload</th>
+  </tr>
+
+    {% for std in students %}
+  <tr>
+    <td>{{ std.id }}</td>
+    <td>{{ std.code }}</td>
+    <td>{{ std.name }}</td>
+    <td>{{ std.email }}</td>
+    <td>images</td>
+    <td>req?</td>
+  </tr>
+    {% endfor %}
+  
+</table>
+
+{% endblock %}
